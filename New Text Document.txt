@@ -1,0 +1,82 @@
+	<div class="row mainContent">
+    
+        <!-- Left Content -->
+        <div class="span9">
+        
+        	<!-- ENC Nav -->
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="<?php echo site_url('page/contact'); ?>">Contact by Email</a></li>
+                <li ><a href="<?php echo site_url('page/prayer'); ?>">Prayer Requests</a></li>
+            </ul>
+        
+        	<!-- Slider -->
+                <div id="videoCarousel" class="carousel slide">
+                    <!-- Carousel items -->
+                    <div class="carousel-inner">
+                       <?php $i = 1; ?>
+						<?php foreach($slider as $s): ?>
+                        <div class="item <?php if($i == 1) { echo 'active'; } ?>">
+                            <?php if($s['link'] != '') { echo '<a href="'.$s['link'].'">'; } ?><img src="<?php echo base_url(); ?>img/slides/<?php echo $s['fileName']; ?>" alt="<?php echo $s['fileName']; ?>" /><?php if($s['link'] != '') { echo '</a>'; } ?>
+                        </div>
+                        <?php $i++; ?>
+                        <?php endforeach; ?>
+                    </div>
+                    <!-- Carousel nav -->
+                    <a class="carousel-control left" href="#videoCarousel" data-slide="prev">&lsaquo;</a>
+                    <a class="carousel-control right" href="#videoCarousel" data-slide="next">&rsaquo;</a>
+                </div>
+                <!-- End Slider -->
+            
+            <!-- Guestbook Form -->
+            <div class="row">
+            	<div class="span9 guestbookIntro">
+                    <h1>Contact Us.</h1>
+                    <?php if(validation_errors()): ?>
+                    <div class="error"><?php echo validation_errors(); ?></div>
+                    <?php endif; ?>
+                    <?php if($this->recaptcha->getError() != 'invalid-request-cookie'): ?>
+                    <div class="error"><?php echo ($this->recaptcha->getError() == 'incorrect-captcha-sol' ? 'Captcha Validation Failed' : $this->recaptcha->getError()) ?></div>
+                    <?php endif; ?>
+                    <?php if($this->session->flashdata('success')): ?>
+                    <div class="success"><?php echo $this->session->flashdata('success'); ?></div>
+                    <?php endif; ?>
+                </div>
+            </div>
+            <?php echo form_open('page/contact', 'id="captcha-form"'); ?>
+            <div class="row">
+                <div class="span4">
+                	Name: <br /><?php echo form_input('name', set_value('name'), 'class="span4"'); ?>
+                </div>
+                <div class="span5">
+                	Email: <br /><?php echo form_input('email', set_value('email'), 'class="span5"'); ?>
+                </div>
+            </div>
+            <div class="row">
+                <div class="span9">
+                	Subject: <br /><?php echo form_input('subject', set_value('subject'), 'class="span9"'); ?>
+                </div>
+            </div>
+            <div class="row">
+                <div class="span9">
+                	Message: <br /><textarea rows="6" class="span9" name="message"><?php echo set_value('message'); ?></textarea>
+                    <div>
+                	<div class="pull-left"><?php echo $this->recaptcha->recaptcha_get_html(); ?></div>
+                </div>
+                </div>
+                
+            </div>
+            <div class="row">
+                <div class="span9" style="text-align:right;">
+                	<button type="submit" class="btn btn-large btn-primary captcha-submit">Contact Us</button>
+                </div>
+            </div>
+            <?php echo form_close(); ?>
+            <!-- End Guestbook Form -->
+            
+        </div>
+        <!-- End Left Content -->
+        
+        <?php require_once(APPPATH.'/views/includes/right-sidebar.php'); ?>
+        
+    </div>
+    <!-- End Main Content -->
